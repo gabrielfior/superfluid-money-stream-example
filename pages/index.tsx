@@ -32,10 +32,39 @@ export default function Home() {
     fetchData().catch(console.error);
   }, [fetchData, provider]);
 
+  const deleteFlow = async () => {
+    // ToDo - Create list and delete from list
+    console.log('delete');
+    const sender = await signer!.getAddress();
+    if (!ethers.utils.isAddress(recipient) || !ethers.utils.isAddress(sender)) {
+      toast("Sender or recipient address not valid");
+      return;
+    }
 
+    const DAIxContract = await sf!.loadSuperToken("fDAIx");
+    console.log('oi', await sf?.query.listAllSuperTokens({isListed: true}));
+    console.log('dai cont', DAIxContract);
+    const deleteFlowOperation = sf!.cfaV1.deleteFlow({
+      sender: sender,
+      receiver: recipient,
+      superToken: DAIxContract.address,
+      flowRate: "1",
+      overrides: {gasLimit: ethers.BigNumber.from("800000")}
+    });
+    try {
+      console.log('entered try');
+      const result = await deleteFlowOperation.exec(signer!);
+      console.log(result);
+    }
+    catch (error: any) {
+      console.error(error);
+      toast.error(((error.message) as string).slice(0, 20));
+    }
+  };
 
-  const sendLumpSum = async () => {
-    console.log('sendLumpSum', sf);
+  const createFlow = async () => {
+    // ToDo - Add amount as inputNumber
+    console.log('createFlow', sf);
 
     const sender = await signer!.getAddress();
     if (!ethers.utils.isAddress(recipient) || !ethers.utils.isAddress(sender)) {
@@ -44,18 +73,20 @@ export default function Home() {
     }
 
     const DAIxContract = await sf!.loadSuperToken("fDAIx");
+    console.log('oi', await sf?.query.listAllSuperTokens({isListed: true}));
     console.log('dai cont', DAIxContract);
     const createFlowOperation = sf!.cfaV1.createFlow({
       sender: sender,
       receiver: recipient,
       superToken: DAIxContract.address,
       flowRate: "1",
+      overrides: {gasLimit: ethers.BigNumber.from("800000")}
     });
     try {
       console.log('entered try');
-      const tx = await createFlowOperation.getSignedTransaction(signer!);
-      const result = await provider.sendTransaction(tx);
-      //const result = await createFlowOperation.exec(signer!,{gas: 800000});
+      //const tx = await createFlowOperation.getSignedTransaction(signer!);
+      //const result = await provider.sendTransaction(tx);
+      const result = await createFlowOperation.exec(signer!);
       console.log(result);
     }
     catch (error: any) {
@@ -77,7 +108,8 @@ export default function Home() {
         <div>
           <Input placeholder="default size" prefix={<UserOutlined />} value={recipient} onChange={(e) => setRecipient(e.target.value)} />
 
-          <Button shape='round' type="primary" onClick={sendLumpSum}>Send lump sum</Button>
+          <Button shape='round' type="primary" onClick={createFlow}>Create flow</Button>
+          <Button shape='round' type="primary" onClick={deleteFlow}>Delete flow</Button>
         </div>}
 
     </div>
