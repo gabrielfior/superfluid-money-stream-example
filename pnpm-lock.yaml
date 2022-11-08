@@ -16,6 +16,7 @@ specifiers:
   react: 18.2.0
   react-dom: 18.2.0
   react-toastify: ^9.1.1
+  styled-components: ^5.3.6
   typescript: 4.8.4
   wagmi: ^0.7.12
 
@@ -35,6 +36,7 @@ dependencies:
   react: 18.1.0
   react-dom: 18.2.0_react@18.1.0
   react-toastify: 9.1.1_2q7l3o2s2f77g7novtsxtrhvne
+  styled-components: 5.3.6_qw4zycuh6k777tg5myteqanggi
   typescript: 4.8.4
   wagmi: 0.7.12_4l3cp4osriep5tm3uaav6omdli
 

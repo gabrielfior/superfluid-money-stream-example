@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { WagmiConfig, createClient, chain  } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
 import { ToastContainer } from 'react-toastify';
+import { ExampleButton } from '../components/ExampleButton';
 
 const alchemyId = process.env.ALCHEMY_API_KEY;
 
